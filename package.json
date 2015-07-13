@@ -1,0 +1,34 @@
+{
+  "name": "omnipotent",
+  "version": "1.0.0",
+  "description": "Code everywhere",
+  "main": "index.jsx",
+  "scripts": {
+    "build": "node bin/build.js",
+    "dev": "npm run start & npm run watch",
+    "start": "httpster",
+    "watch": "node bin/watch.js"
+  },
+  "author": "Christian Maughan Tegnér",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CMTegner/omnipotent"
+  },
+  "bugs": {
+    "url": "https://github.com/CMTegner/omnipotent/issues"
+  },
+  "homepage": "https://github.com/CMTegner/omnipotent",
+  "devDependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.3",
+    "codemirror": "^5.4.0",
+    "exorcist": "^0.4.0",
+    "flux": "^2.0.3",
+    "httpster": "^1.0.1",
+    "moment": "^2.10.3",
+    "react": "^0.14.0-beta.1",
+    "react-dom": "^0.14.0-beta.1",
+    "watchify": "^3.2.1"
+  }
+}
