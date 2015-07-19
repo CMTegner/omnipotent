@@ -27,9 +27,9 @@ export default class App extends React.Component {
         try {
             let transpiled = babel(src).code;
             console.log(transpiled);
-            let requires = detective(transpiled);
-            if (requires.length > 0) {
-                console.dir([...new Set(requires)]);
+            let imports = detective(transpiled);
+            if (imports.length > 0) {
+                console.dir([...new Set(imports)]);
             }
         } catch (e) {}
     }
