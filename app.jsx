@@ -1,6 +1,9 @@
 import React from 'react';
 import babel from 'babel-core/lib/transformation';
+import debounce from 'lodash.debounce';
+import concat from 'concat-stream';
 import detective from 'detective';
+import request from 'request';
 import FileNav from './file-nav.jsx';
 import Editor from './editor.jsx';
 
@@ -23,16 +26,25 @@ const styles = {
 };
 
 export default class App extends React.Component {
-    _onChange(src) {
+    _onChange = debounce((src) => {
         try {
             let transpiled = babel(src).code;
             console.log(transpiled);
             let imports = detective(transpiled);
             if (imports.length > 0) {
-                console.dir([...new Set(imports)]);
+                const dependencies = [...new Set(imports)]
+                    .sort()
+                    .reduce((d, dep) => { d[dep] = '*'; return d; }, {});
+                const options = {
+                    uri: 'https://wzrd.in/multi',
+                    method: 'POST',
+                    withCredentials: false,
+                    body: JSON.stringify({ dependencies })
+                };
+                request(options).pipe(concat(::console.log))
             }
         } catch (e) {}
-    }
+    }, 500)
     render() {
         return (
             <div style={styles.container}>
