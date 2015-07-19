@@ -23,6 +23,7 @@
     "babelify": "^6.1.2",
     "browserify": "^10.2.3",
     "codemirror": "^5.4.0",
+    "detective-es6": "^1.1.2",
     "exorcist": "^0.4.0",
     "flux": "^2.0.3",
     "httpster": "^1.0.1",
