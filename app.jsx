@@ -1,5 +1,6 @@
 import React from 'react';
-import detective from 'detective-es6';
+import babel from 'babel-core/lib/transformation';
+import detective from 'detective';
 import FileNav from './file-nav.jsx';
 import Editor from './editor.jsx';
 
@@ -23,13 +24,14 @@ const styles = {
 
 export default class App extends React.Component {
     _onChange(src) {
-        let requires;
         try {
-            requires = detective(src);
+            let transpiled = babel(src).code;
+            console.log(transpiled);
+            let requires = detective(transpiled);
+            if (requires.length > 0) {
+                console.dir([...new Set(requires)]);
+            }
         } catch (e) {}
-        if (requires && requires.length > 0) {
-            console.dir([...new Set(requires)]);
-        }
     }
     render() {
         return (
