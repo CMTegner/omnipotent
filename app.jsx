@@ -41,7 +41,15 @@ export default class App extends React.Component {
                     withCredentials: false,
                     body: JSON.stringify({ dependencies })
                 };
-                request(options).pipe(concat(::console.log))
+                request(options).pipe(concat(data => {
+                    const deps = JSON.parse(data);
+                    let compiled = '';
+                    for (let dep in deps) {
+                        compiled += deps[dep].bundle;
+                    }
+                    compiled += `;(function () { ${transpiled} }())`;
+                    eval(compiled);
+                }));
             }
         } catch (e) {}
     }, 500)
