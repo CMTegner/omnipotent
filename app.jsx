@@ -1,5 +1,5 @@
 import React from 'react';
-import babel from 'babel-core/lib/transformation';
+const babel = require('babel-core'); // import doesn't work
 import debounce from 'lodash.debounce';
 import concat from 'concat-stream';
 import detective from 'detective';
@@ -35,7 +35,7 @@ export default class App extends React.Component {
     _onChange = debounce((src) => {
         this.setState({ src });
         try {
-            let transpiled = babel(src).code;
+            let transpiled = babel.transform(src).code;
             console.log(transpiled);
             let imports = detective(transpiled);
             if (imports.length > 0) {
@@ -49,7 +49,7 @@ export default class App extends React.Component {
                     body: JSON.stringify({ dependencies })
                 };
                 request(options).pipe(concat(data => {
-                    const deps = JSON.parse(data);
+                    const deps = JSON.parse(data.toString());
                     let compiled = '';
                     for (let dep in deps) {
                         compiled += deps[dep].bundle;
@@ -75,12 +75,14 @@ export default class App extends React.Component {
                     onChange={this._onChange}
                 />
                 <Preview style={styles.preview}>
-                    <head />
-                    <body>
-                        {compiled &&
-                            <script>{compiled}</script>
-                        }
-                    </body>
+                    <html>
+                        <head />
+                        <body>
+                            {compiled &&
+                                <script dangerouslySetInnerHTML={{ __html: compiled }} />
+                            }
+                        </body>
+                    </html>
                 </Preview>
             </div>
         );
