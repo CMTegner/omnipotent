@@ -26,7 +26,12 @@ const styles = {
 };
 
 export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { src: '', compiled: '' };
+    }
     _onChange = debounce((src) => {
+        this.setState({ src });
         try {
             let transpiled = babel(src).code;
             console.log(transpiled);
@@ -48,8 +53,12 @@ export default class App extends React.Component {
                         compiled += deps[dep].bundle;
                     }
                     compiled += `;(function () { ${transpiled} }())`;
-                    eval(compiled);
+                    this.setState({ compiled });
                 }));
+            } else {
+                //const compiled = `;(function () { ${transpiled} }())`;
+                const compiled = transpiled;
+                this.setState({ compiled });
             }
         } catch (e) {}
     }, 500)
