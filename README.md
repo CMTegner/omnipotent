@@ -1,0 +1,4 @@
+# Omnipotent
+
+Code everywhere
+
