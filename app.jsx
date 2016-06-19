@@ -6,6 +6,7 @@ import detective from 'detective';
 import request from 'request';
 import FileNav from './file-nav.jsx';
 import Editor from './editor.jsx';
+import Preview from './preview.jsx';
 
 const styles = {
     container: {
@@ -20,6 +21,7 @@ const styles = {
         width: '50vw'
     },
     preview: {
+        border: 0,
         flexGrow: 1,
         width: '40vw'
     }
@@ -63,13 +65,23 @@ export default class App extends React.Component {
         } catch (e) {}
     }, 500)
     render() {
+        const { src, compiled } = this.state;
         return (
             <div style={styles.container}>
                 <FileNav style={styles.fileNav} />
-                <Editor style={styles.editor} onChange={this._onChange}/>
-                <div style={styles.preview}>
-                    Preview goes here
-                </div>
+                <Editor
+                    value={src}
+                    style={styles.editor}
+                    onChange={this._onChange}
+                />
+                <Preview style={styles.preview}>
+                    <head />
+                    <body>
+                        {compiled &&
+                            <script>{compiled}</script>
+                        }
+                    </body>
+                </Preview>
             </div>
         );
     }
